@@ -1,0 +1,7 @@
+project:
+  name: automated_data_pipeline
+astro:
+  webserver:
+    port: 8081
+  postgres:
+    port: 5433
