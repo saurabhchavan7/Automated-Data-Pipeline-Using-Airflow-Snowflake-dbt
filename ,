@@ -1,0 +1,91 @@
+# Automated Data Pipeline Using Airflow, Snowflake & dbt
+
+## Project Overview
+This project implements an **end-to-end automated data pipeline** that extracts, transforms, and loads **User** into **Snowflake** using **Apache Airflow, dbt (Data Build Tool), and Azure Services**. The pipeline is designed to be **scalable, efficient, and fully automated**, ensuring seamless **data ingestion, transformation, and analytics**.
+
+---
+
+## Key Features
+- **Automated Data Ingestion**: Raw data are extracted from **Azure SQL Database**.
+- **ETL Pipeline**: Data is processed using **Azure Data Factory (ADF)** and **Apache Airflow**.
+- **Data Transformation**: dbt is used for **modeling and transformations** inside Snowflake.
+- **Incremental Data Load**: Ensures **efficient processing** by handling only new or updated data.
+- **Orchestration**: Apache Airflow automates task execution and dependencies.
+- **Monitoring & Logging**: Airflow and Snowflake provide **detailed logs and execution tracking**.
+
+---
+
+## Tools and Technologies Used
+
+| **Component**       | **Technology Used**                          |
+|---------------------|---------------------------------------------|
+| **Data Ingestion**  | Azure SQL Database, Airflow, ADF            |
+| **Orchestration**   | Apache Airflow                              |
+| **Processing**      | dbt, Python                                 |
+| **Storage**         | Snowflake (Warehouse, Staging, Tables)      |
+| **Monitoring**      | Airflow DAGs, Snowflake Queries             |
+| **Security**        | Snowflake Roles, Access Control, Encryption |
+
+---
+
+## Project Steps
+
+### Step 1: Data Ingestion from Azure SQL Database
+- Extract raw data from **Azure SQL** (tables: `customer_train`, `customer_test`, `defaulter_train`, `defaulter_test`).
+- Implement **incremental data load** using **Change Data Capture (CDC)** in **Azure Data Factory**.
+- Store data in the **Bronze layer** of **Snowflake** for further transformation.
+
+### Step 2: Setting Up Apache Airflow for Orchestration
+- Created an **Airflow DAG** (`dbt_snowflake_dag`) to automate data pipeline execution.
+- Defined the pipeline to:
+  - **Trigger dbt models** for data transformation.
+  - **Handle failures** and **monitor logs** efficiently.
+- Used **Airflow Executors** to schedule **daily pipeline runs**.
+
+### Step 3: Data Transformation Using dbt
+- Defined **dbt models** (`my_first_dbt_model`, `my_second_dbt_model`) to transform raw data.
+- Implemented:
+  - **Data Cleansing** (Removing duplicates, fixing null values).
+  - **Schema Modeling** (Fact and Dimension Tables).
+  - **Business Logic** (Loan risk categorization, default probability).
+- **Configured dbt profiles.yml** for Snowflake connection.
+
+### Step 4: Data Warehouse Integration with Snowflake
+- Created **warehouse (`dbt_DEV_WH`) and schema (`PUBLIC`)** in Snowflake.
+- Used **Airflow Snowflake connection** to load transformed data.
+- Set up **role-based access control** (`dbt_DEV_ROLE`).
+
+---
+
+## Architecture Flow
+
+1. **Azure SQL Database** stores raw `customer_train` and `defaulter_train` tables.  
+2. **Azure Data Factory** extracts data using **incremental loading (CDC)**.  
+3. **Apache Airflow DAGs** orchestrate pipeline execution.  
+4. **dbt models** transform raw data into structured models.  
+5. **Snowflake Warehouse** loads **cleansed & transformed data**.  
+6. **Data is ready for analytics** in Snowflake.  
+
+---
+
+## Security Measures
+- **Role-Based Access Control (RBAC)** – Used **Snowflake roles (`dbt_DEV_ROLE`)** to restrict access.
+- **Secure Credentials Management** – Airflow **Connections** for sensitive credentials.
+- **Network Security** – Allowed **specific IP ranges** to access **Azure SQL** and **Snowflake**.
+- **Automated Monitoring** – Logs & alerts configured in **Airflow** and **Snowflake**.
+
+---
+
+## Business Impact
+- 📊 **Real-time Data Pipeline** – Ensures **up-to-date insights** for business decision-making.  
+- 📉 **Cost Optimization** – Using **incremental loads**, reducing processing costs.  
+- 🚀 **Scalable & Reliable** – Built with **incremental loads**, ensuring **efficient processing**.  
+
+---
+
+## How to Run the Project Locally
+
+### 1. Clone the Repository
+```sh
+git clone https://github.com/your-repo/automated_data_pipeline.git
+cd automated_data_pipeline
